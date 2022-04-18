@@ -5,8 +5,9 @@ package br.edu.ifsul.cc.lpoo.cs.model;
  *
  * @author Camila
  */
-public class Resultado {
-    private ResultadoID id; // @EmbeddedId
+public class Resultado { // É uma chave primária composta
+    private ResultadoID id; // @EmbeddedId (embarcada)
+    private Status status; // Enum
     
     public Resultado() {
         
@@ -24,6 +25,14 @@ public class Resultado {
      */
     public void setId(ResultadoID id) {
         this.id = id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
     
     

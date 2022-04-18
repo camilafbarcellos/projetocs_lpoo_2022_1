@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class Arma extends Artefato { // Herança
     private Float comprimento_cano;
+    private Tipo tipo; // Enum
     private List<Municao> municoes; // Agregação
     
     public Arma() {
@@ -29,6 +30,14 @@ public class Arma extends Artefato { // Herança
         this.comprimento_cano = comprimento_cano;
     }
 
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
     /**
      * @return the municoes
      */
@@ -42,6 +51,7 @@ public class Arma extends Artefato { // Herança
     public void setMunicoes(List<Municao> municoes) {
         this.municoes = municoes;
     }
-    
+
+      
     
 }

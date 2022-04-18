@@ -15,6 +15,7 @@ public class Jogador {
     private Calendar data_ultimo_login;
     private Endereco endereco; // Associação
     private List<Patente> patentes; // Agregação
+    private List<Artefato> artefatos; // Agregação
     private List<Compra> compras; // Composição
     
     public Jogador() {
@@ -120,6 +121,20 @@ public class Jogador {
     }
 
     /**
+     * @return the artefatos
+     */
+    public List<Artefato> getArtefatos() {
+        return artefatos;
+    }
+
+    /**
+     * @param artefatos the artefatos to set
+     */
+    public void setArtefatos(List<Artefato> artefatos) {
+        this.artefatos = artefatos;
+    }
+
+    /**
      * @return the compras
      */
     public List<Compra> getCompras() {
@@ -133,5 +148,5 @@ public class Jogador {
         this.compras = compras;
     }
 
-    
+
 }

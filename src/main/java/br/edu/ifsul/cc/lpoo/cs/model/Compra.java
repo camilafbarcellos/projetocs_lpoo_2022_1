@@ -13,6 +13,7 @@ public class Compra {
     private Calendar data;
     private Float total;
     private List<ItensCompra> itens; // Composição
+    private Jogador jogador; // Compra é ent. fraca na composição e ref. a forte
     
     public Compra() {
         
@@ -72,5 +73,13 @@ public class Compra {
      */
     public void setItens(List<ItensCompra> itens) {
         this.itens = itens;
+    }
+
+    public Jogador getJogador() {
+        return jogador;
+    }
+
+    public void setJogador(Jogador jogador) {
+        this.jogador = jogador;
     }
 }

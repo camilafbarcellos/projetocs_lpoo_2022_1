@@ -14,6 +14,7 @@ public class Round {
     private Calendar inicio;
     private Calendar fim;
     private List<Objetivo> objetivos; // Agregação
+    private Modo modo; // Enum
     
     public Round() {
         
@@ -87,6 +88,14 @@ public class Round {
      */
     public void setObjetivos(List<Objetivo> objetivos) {
         this.objetivos = objetivos;
+    }
+
+    public Modo getModo() {
+        return modo;
+    }
+
+    public void setModo(Modo modo) {
+        this.modo = modo;
     }
     
     

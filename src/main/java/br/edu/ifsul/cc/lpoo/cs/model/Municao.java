@@ -7,6 +7,7 @@ package br.edu.ifsul.cc.lpoo.cs.model;
  */
 public class Municao extends Artefato { // Herança
     private Boolean explosiva;
+    private Calibre calibre; // Enum
     
     public Municao() {
         
@@ -24,6 +25,14 @@ public class Municao extends Artefato { // Herança
      */
     public void setExplosiva(Boolean explosiva) {
         this.explosiva = explosiva;
+    }
+
+    public Calibre getCalibre() {
+        return calibre;
+    }
+
+    public void setCalibre(Calibre calibre) {
+        this.calibre = calibre;
     }
     
     

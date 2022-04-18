@@ -10,8 +10,7 @@ public class Endereco {
     private Integer id;
     private String cep;
     private String complemento;
-
-    // Jogador referencia Endereco
+    // Jogador referencia Endereco por associação
 
     public Endereco() { // constrtutor sem parâmetros
         

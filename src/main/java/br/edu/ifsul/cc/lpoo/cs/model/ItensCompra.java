@@ -10,6 +10,7 @@ public class ItensCompra {
     private String quantidade;
     private Float valor;
     private Artefato artefato; // Associação
+    private Compra compra; // Ref. a entidade forte da composição
     
     public ItensCompra() {
         
@@ -69,5 +70,13 @@ public class ItensCompra {
      */
     public void setArtefato(Artefato artefato) {
         this.artefato = artefato;
+    }
+
+    public Compra getCompra() {
+        return compra;
+    }
+
+    public void setCompra(Compra compra) {
+        this.compra = compra;
     }
 }
