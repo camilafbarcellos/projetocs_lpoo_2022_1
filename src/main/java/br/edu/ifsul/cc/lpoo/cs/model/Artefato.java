@@ -1,14 +1,43 @@
 
 package br.edu.ifsul.cc.lpoo.cs.model;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  *
  * @author Camila
+ * @doc: https://www.devmedia.com.br/tipos-de-heranca-no-hibernate/28641
  */
-public class Artefato {
+
+@Entity
+@Table(name = "tb_artefato")
+@Inheritance(strategy = InheritanceType.JOINED) // notação que indica herança e estratégia -> deve ser colocada na superclasse
+// neste projeto, ou o Artefato é Arma ou é Munição, não pode ser ambos -> indica estratégia JOINED (uma tabela para cada)
+@DiscriminatorColumn(name = "tipo") // informação sobre tipo de especialização (JOINED)
+public class Artefato implements Serializable {
+    
+    @Id
+    @SequenceGenerator(name = "seq_artefato", sequenceName = "seq_artefato_id", allocationSize = 1) // denomina sequenciador 1 em 1 no PostgreSQL
+    @GeneratedValue(generator = "seq_artefato", strategy = GenerationType.SEQUENCE) // indica estrtura de sequência
     private Integer id;
+    
+    @Column(nullable = false, length = 100)
     private String nome;
+    
+    @Column(precision = 2, nullable = true)
     private Float peso;
+    
+    @Column(precision = 2, nullable = false)
     private Float valor;
     
     public Artefato() {

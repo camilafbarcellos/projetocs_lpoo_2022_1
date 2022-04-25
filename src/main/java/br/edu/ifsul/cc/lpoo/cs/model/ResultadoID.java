@@ -1,15 +1,27 @@
 
 package br.edu.ifsul.cc.lpoo.cs.model;
 
+import java.io.Serializable;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 /**
  *
  * @author Camila
  */
-public class ResultadoID {
+
+@Embeddable
+public class ResultadoID implements Serializable {
+
+    @ManyToOne
+    @JoinColumn(name = "objetivo_id")
     private Objetivo objetivo; // Associação
+
+    @ManyToOne
+    @JoinColumn(name = "round_id")
     private Round round; // Associação
-    private Resultado resultado; // Associação
-    
+
     public ResultadoID() {
         
     }
@@ -40,21 +52,6 @@ public class ResultadoID {
      */
     public void setRound(Round round) {
         this.round = round;
-    }
-
-    /**
-     * @return the resultado
-     */
-    public Resultado getResultado() {
-        return resultado;
-    }
-
-    /**
-     * @param resultado the resultado to set
-     */
-    public void setResultado(Resultado resultado) {
-        this.resultado = resultado;
-    }
-    
+    }    
     
 }

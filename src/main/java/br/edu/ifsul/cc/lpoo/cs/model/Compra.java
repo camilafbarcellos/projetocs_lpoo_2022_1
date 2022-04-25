@@ -1,18 +1,45 @@
 
 package br.edu.ifsul.cc.lpoo.cs.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
  * @author Camila
  */
-public class Compra {
+
+@Entity
+@Table(name = "tb_compra")
+public class Compra implements Serializable {
+
+    @Id
+    @SequenceGenerator(name = "seq_compra", sequenceName = "seq_compra_id", allocationSize = 1)
+    @GeneratedValue(generator = "seq_compra", strategy = GenerationType.SEQUENCE)
     private Integer id;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar data;
+
+    @Column(precision = 2, nullable = false)
     private Float total;
+
+    @OneToMany(mappedBy = "compra") // variável compra (Compra) em ItensCompra
     private List<ItensCompra> itens; // Composição
+    
+    @OneToMany(mappedBy = "compras")
     private Jogador jogador; // Compra é ent. fraca na composição e ref. a forte
     
     public Compra() {
