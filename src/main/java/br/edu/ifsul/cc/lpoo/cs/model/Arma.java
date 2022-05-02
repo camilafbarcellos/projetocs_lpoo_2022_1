@@ -3,6 +3,7 @@ package br.edu.ifsul.cc.lpoo.cs.model;
 
 import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_arma")
+@DiscriminatorValue("A")
 public class Arma extends Artefato { // Herança
     @Column(precision = 2, nullable = false)
     private Float comprimento_cano;

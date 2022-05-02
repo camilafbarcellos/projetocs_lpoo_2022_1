@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -54,7 +55,8 @@ public class Round implements Serializable {
     @Enumerated(EnumType.STRING)
     private Modo modo; // Enum
 
-    @OneToMany(mappedBy = "rounds")
+    @ManyToOne
+    @JoinColumn(name = "partida_id", nullable = false)
     private Partida partida; // Partida é ent. fraca na composição e ref. a forte
     
     public Round() {

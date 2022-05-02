@@ -19,12 +19,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_endereco")
-/*
-@NamedQueries({      
+@NamedQueries({ // consultas nomeadas
     @NamedQuery(name="Endereco.getbyid",
                query="SELECT e From Endereco e order by e.id ")
 })
-*/
 public class Endereco implements Serializable {
     
     @Id

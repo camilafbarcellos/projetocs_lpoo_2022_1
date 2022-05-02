@@ -26,10 +26,10 @@ public class Local implements Serializable {
     @Column(nullable = false, length = 100)
     private String nome;
     
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String latitude;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String longitude;
     
     public Local() {

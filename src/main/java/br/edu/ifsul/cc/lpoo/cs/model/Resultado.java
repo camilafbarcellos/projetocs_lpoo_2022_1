@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "tb_resulado")
 public class Resultado implements Serializable { // É uma chave primária composta
 
-    @EmbeddedId
+    @EmbeddedId // chave primária composta
     private ResultadoID id; // @EmbeddedId (embarcada)     
     
     @Column(nullable = false)

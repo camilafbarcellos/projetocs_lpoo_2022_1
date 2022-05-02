@@ -28,6 +28,10 @@ public class ItensCompra implements Serializable {
 
     @Column(nullable = false)
     private String quantidade;
+/*
+    @Column(precision = 2, nullable = false)
+    private Float quantidade;
+*/
 
     @Column(nullable = false, precision = 2)
     private Float valor;
@@ -36,7 +40,8 @@ public class ItensCompra implements Serializable {
     @JoinColumn(name = "artefato_id", nullable = false)
     private Artefato artefato; // Associação
 
-    @OneToMany(mappedBy = "itens")
+    @ManyToOne
+    @JoinColumn(name = "compra_id", nullable = false)
     private Compra compra; // Ref. a entidade forte da composição
     
     public ItensCompra() {

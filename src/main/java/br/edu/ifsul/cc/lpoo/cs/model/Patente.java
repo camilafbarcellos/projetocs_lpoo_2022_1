@@ -20,14 +20,14 @@ import javax.persistence.Table;
 public class Patente implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "seq_round", sequenceName = "seq_round_id", allocationSize = 1)
-    @GeneratedValue(generator = "seq_round", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "seq_patente", sequenceName = "seq_patente_id", allocationSize = 1)
+    @GeneratedValue(generator = "seq_patente", strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @Column(nullable = false, length = 100)
     private String nome;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = true, length = 20)
     private String cor;
     
     public Patente() {
