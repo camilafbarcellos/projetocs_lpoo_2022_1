@@ -24,7 +24,7 @@ public class Patente implements Serializable {
     @GeneratedValue(generator = "seq_patente", strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 200)
     private String nome;
 
     @Column(nullable = true, length = 20)

@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -26,11 +25,11 @@ public class ItensCompra implements Serializable {
     @GeneratedValue(generator = "seq_itenscompra", strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    @Column(nullable = false)
-    private String quantidade;
-/*
     @Column(precision = 2, nullable = false)
     private Float quantidade;
+/*
+    @Column(nullable = false)
+    private String quantidade;
 */
 
     @Column(nullable = false, precision = 2)
@@ -65,14 +64,14 @@ public class ItensCompra implements Serializable {
     /**
      * @return the quantidade
      */
-    public String getQuantidade() {
+    public Float getQuantidade() {
         return quantidade;
     }
 
     /**
      * @param quantidade the quantidade to set
      */
-    public void setQuantidade(String quantidade) {
+    public void setQuantidade(Float quantidade) {
         this.quantidade = quantidade;
     }
 

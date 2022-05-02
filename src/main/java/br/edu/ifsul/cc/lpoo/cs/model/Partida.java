@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -24,6 +26,10 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tb_partida")
+@NamedQueries({      
+    @NamedQuery(name="Partida.getbyid",
+               query="SELECT p From Partida p order by p.id asc ")
+})
 public class Partida implements Serializable {
 
     @Id

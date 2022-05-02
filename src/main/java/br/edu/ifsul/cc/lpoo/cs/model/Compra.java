@@ -35,7 +35,7 @@ public class Compra implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar data;
 
-    @Column(precision = 2, nullable = false)
+    @Column(precision = 2, nullable = true)
     private Float total;
 
     @OneToMany(mappedBy = "compra") // variável compra (Compra) em ItensCompra
