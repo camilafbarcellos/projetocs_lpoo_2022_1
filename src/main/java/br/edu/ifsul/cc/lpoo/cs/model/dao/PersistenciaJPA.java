@@ -3,6 +3,7 @@ package br.edu.ifsul.cc.lpoo.cs.model.dao;
 
 import br.edu.ifsul.cc.lpoo.cs.model.Endereco;
 import br.edu.ifsul.cc.lpoo.cs.model.Jogador;
+import br.edu.ifsul.cc.lpoo.cs.model.Partida;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -67,4 +68,12 @@ public class PersistenciaJPA implements InterfacePersistencia {
         
         return entity.createNamedQuery("Endereco.getbyid").getResultList();
     }
+
+    @Override
+    public List<Partida> listPartidas() {
+        
+        return entity.createNamedQuery("Partida.getbyid").getResultList();
+    }
+    
+    
 }

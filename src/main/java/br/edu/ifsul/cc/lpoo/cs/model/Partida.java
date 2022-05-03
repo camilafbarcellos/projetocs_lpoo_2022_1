@@ -41,7 +41,7 @@ public class Partida implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar inicio;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar fim;
 

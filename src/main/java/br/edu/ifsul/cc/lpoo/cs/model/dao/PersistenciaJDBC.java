@@ -3,6 +3,7 @@ package br.edu.ifsul.cc.lpoo.cs.model.dao;
 
 import br.edu.ifsul.cc.lpoo.cs.model.Endereco;
 import br.edu.ifsul.cc.lpoo.cs.model.Jogador;
+import br.edu.ifsul.cc.lpoo.cs.model.Partida;
 import java.util.List;
 
 /**
@@ -55,6 +56,11 @@ public class PersistenciaJDBC implements InterfacePersistencia {
 
     @Override
     public List<Endereco> listEnderecos() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<Partida> listPartidas() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
