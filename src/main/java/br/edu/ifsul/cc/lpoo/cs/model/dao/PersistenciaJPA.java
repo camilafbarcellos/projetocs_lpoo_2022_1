@@ -47,8 +47,6 @@ public class PersistenciaJPA implements InterfacePersistencia {
         entity.getTransaction().begin();// abrir a transacao.
         entity.persist(o); //realiza o insert ou update.
         entity.getTransaction().commit(); //comita a transacao (comando sql)
-        
-        
     }
 
     @Override
@@ -57,8 +55,6 @@ public class PersistenciaJPA implements InterfacePersistencia {
         entity.getTransaction().begin();// abrir a transacao.
         entity.remove(o); //realiza o delete
         entity.getTransaction().commit(); //comita a transacao (comando sql)
-        
-        
     }
 
     @Override
@@ -70,6 +66,5 @@ public class PersistenciaJPA implements InterfacePersistencia {
     public List<Endereco> listEnderecos() {
         
         return entity.createNamedQuery("Endereco.getbyid").getResultList();
-        
     }
 }

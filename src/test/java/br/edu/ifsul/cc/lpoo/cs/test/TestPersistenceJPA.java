@@ -2,13 +2,14 @@ package br.edu.ifsul.cc.lpoo.cs.test;
 
 import br.edu.ifsul.cc.lpoo.cs.model.Endereco;
 import br.edu.ifsul.cc.lpoo.cs.model.dao.PersistenciaJPA;
+import java.util.List;
 import org.junit.Test;
 
 /**
  *
  * @author 20202pf.cc0003
  */
-public class TestePersistenceJPA {
+public class TestPersistenceJPA {
 
     /*
         Atividade assíncrona - 07/05/2022
@@ -19,9 +20,8 @@ public class TestePersistenceJPA {
         2) Se a lista de partidas não for vazia, imprimir na tela os dados de cada objeto, altere e depois remova-o.
         3) Se a lista de partidas for vazia, persistir dois novos objetos de partida.
     
-    */
-    
-    @Test 
+     */
+    //@Test 
     public void testConexaoGeracaoTabelas() {
         PersistenciaJPA persistencia = new PersistenciaJPA();
         if (persistencia.conexaoAberta()) {
@@ -32,7 +32,7 @@ public class TestePersistenceJPA {
         }
 
     }
-    
+
     //@Test
     public void testPersistenciaEndereco() throws Exception { // o throws está jogando o erro para o NetBeans resolver
         PersistenciaJPA persistencia = new PersistenciaJPA();
@@ -59,31 +59,24 @@ public class TestePersistenceJPA {
             System.out.println("Não abriu a conexão com o  BD via JPA");
         }
     }
-    
-    
+
     //@Test
-    /*
     public void testPersistenciaListEndereco() throws Exception {
-    
+
         PersistenciaJPA persistencia = new PersistenciaJPA();
-        if(persistencia.conexaoAberta()){
-            System.out.println("testPersistenciaEndereco:");            
-            
+        if (persistencia.conexaoAberta()) {
+            System.out.println("testPersistenciaEndereco:");
+
             List<Endereco> list = persistencia.listEnderecos();
-            if(!list.isEmpty()){
-            
-                for(Endereco end : list){
-                    
-                    System.out.println("Endereco: "+end.getCep());
+            if (!list.isEmpty()) {
+                for (Endereco end : list) {
+                    System.out.println("Endereco: " + end.getCep());
                 }
             }
-            
-            
-            persistencia.fecharConexao();           
-        }else{
+            persistencia.fecharConexao();
+        } else {
             System.out.println("Nao abriu a conexao com o BD via JPA");
-        }        
+        }
     }
-*/
 
 }
