@@ -14,7 +14,7 @@ import org.junit.Test;
  */
 public class TestPersistenceJPA {
    
-    //@Test 
+   @Test 
     public void testConexaoGeracaoTabelas() {
         PersistenciaJPA persistencia = new PersistenciaJPA();
         if (persistencia.conexaoAberta()) {
@@ -23,7 +23,6 @@ public class TestPersistenceJPA {
         } else {
             System.out.println("Não abriu a conexão com o  BD via JPA");
         }
-
     }
 
     //@Test
@@ -43,7 +42,7 @@ public class TestPersistenceJPA {
                 // 3- encaminhar o e
                 persistencia.persist(e);
             } else { // busca o id=1 e caso encontre mostra e remove
-                System.out.println("Encontrou o id=1 para enredereco" + e.getCep());
+                System.out.println("Encontrou o id=1 para enredereco " + e.getCep());
                 persistencia.remover(e);
             }
 
@@ -82,7 +81,7 @@ public class TestPersistenceJPA {
     
      */
     
-    @Test
+    //@Test
     public void testPersistenciaListPartida() throws Exception {
         PersistenciaJPA persistencia = new PersistenciaJPA();
         if (persistencia.conexaoAberta()) {
@@ -147,5 +146,4 @@ public class TestPersistenceJPA {
             System.out.println("Nao abriu a conexao com o BD via JPA");
         }
     }
-
 }
