@@ -1,7 +1,7 @@
-
 package br.edu.ifsul.cc.lpoo.cs.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.Column;
@@ -21,7 +21,6 @@ import javax.persistence.TemporalType;
  *
  * @author Camila
  */
-
 @Entity
 @Table(name = "tb_compra")
 public class Compra implements Serializable {
@@ -40,13 +39,13 @@ public class Compra implements Serializable {
 
     @OneToMany(mappedBy = "compra") // variável compra (Compra) em ItensCompra
     private List<ItensCompra> itens; // Composição
-    
+
     @ManyToOne
     @JoinColumn(name = "jogador_nickname", nullable = false)
     private Jogador jogador; // Compra é ent. fraca na composição e ref. a forte
-    
+
     public Compra() {
-        
+
     }
 
     /**
@@ -103,6 +102,14 @@ public class Compra implements Serializable {
      */
     public void setItens(List<ItensCompra> itens) {
         this.itens = itens;
+    }
+
+    public void setItem(ItensCompra item) {
+        if (this.itens == null) {
+            this.itens = new ArrayList();
+        }
+
+        this.itens.add(item);
     }
 
     public Jogador getJogador() {

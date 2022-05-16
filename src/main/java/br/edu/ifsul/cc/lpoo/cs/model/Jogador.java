@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,50 +24,52 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "tb_jogador")
-@NamedQueries({      
-    @NamedQuery(name="Jogador.login",
-               query="SELECT j From Jogador j where j.nickname = :paramN and j.senha = :paramS")
+@NamedQueries({
+    @NamedQuery(name = "Jogador.login",
+            query = "SELECT j From Jogador j where j.nickname = :paramN and j.senha = :paramS")
 })
 public class Jogador implements Serializable {
-    
+
     @Id
     private String nickname;
-    
+
     @Column(nullable = false, length = 10)
     private String senha;
-    
+
     @Column
     private Integer pontos;
-    
+
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar data_cadastro;
-    
+
     @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar data_ultimo_login;
-    
+
     @ManyToOne
     @JoinColumn(name = "endereco_id", nullable = false)
     private Endereco endereco; // Associação
-    
+
     @ManyToMany
-    @JoinTable(name = "tb_jogador_patente", joinColumns = {@JoinColumn(name = "jogador_nickname")}, //agregacao, vai gerar uma tabela associativa.
-                                       inverseJoinColumns = {@JoinColumn(name = "patente_id")})
+    @JoinTable(name = "tb_jogador_patente", joinColumns = {
+        @JoinColumn(name = "jogador_nickname")}, //agregacao, vai gerar uma tabela associativa.
+            inverseJoinColumns = {
+                @JoinColumn(name = "patente_id")})
     private List<Patente> patentes; // Agregação
-    
-    
+
     @ManyToMany
-    @JoinTable(name = "tb_jogador_artefato", joinColumns = {@JoinColumn(name = "jogador_nickname")}, //agregacao, vai gerar uma tabela associativa.
-                                       inverseJoinColumns = {@JoinColumn(name = "artefato_id")})
+    @JoinTable(name = "tb_jogador_artefato", joinColumns = {
+        @JoinColumn(name = "jogador_nickname")}, //agregacao, vai gerar uma tabela associativa.
+            inverseJoinColumns = {
+                @JoinColumn(name = "artefato_id")})
     private List<Artefato> artefatos; // Agregação
-    
-    
+
     @OneToMany(mappedBy = "jogador") // mappedBy deve apontar para a referencia de jogador dentro de Compra.
     private List<Compra> compras; // Composição
-    
+
     public Jogador() {
-        
+
     }
 
     /**
@@ -167,6 +170,14 @@ public class Jogador implements Serializable {
         this.patentes = patentes;
     }
 
+    public void setPatente(Patente patente) {
+        if (this.patentes == null) {
+            this.patentes = new ArrayList();
+        }
+
+        this.patentes.add(patente);
+    }
+
     /**
      * @return the artefatos
      */
@@ -179,6 +190,14 @@ public class Jogador implements Serializable {
      */
     public void setArtefatos(List<Artefato> artefatos) {
         this.artefatos = artefatos;
+    }
+
+    public void setArtefato(Artefato artefato) {
+        if (this.artefatos == null) {
+            this.artefatos = new ArrayList();
+        }
+
+        this.artefatos.add(artefato);
     }
 
     /**
@@ -194,6 +213,5 @@ public class Jogador implements Serializable {
     public void setCompras(List<Compra> compras) {
         this.compras = compras;
     }
-
 
 }
