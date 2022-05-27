@@ -73,7 +73,7 @@ public class PersistenciaJPA implements InterfacePersistencia {
 
     @Override
     public List<Partida> listPartidas() {
-
+        // executa a consulta nomeada e retorna a lista
         return entity.createNamedQuery("Partida.getbyid").getResultList();
     }
 

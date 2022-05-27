@@ -13,8 +13,8 @@ import org.junit.Test;
  * @author 20202pf.cc0003
  */
 public class TestPersistenceJPA {
-   
-   @Test 
+
+    @Test
     public void testConexaoGeracaoTabelas() {
         PersistenciaJPA persistencia = new PersistenciaJPA();
         if (persistencia.conexaoAberta()) {
@@ -69,7 +69,7 @@ public class TestPersistenceJPA {
             System.out.println("Nao abriu a conexao com o BD via JPA");
         }
     }
-    
+
     /*
         Atividade assíncrona - 07/05/2022
     
@@ -80,7 +80,6 @@ public class TestPersistenceJPA {
         3) Se a lista de partidas for vazia, persistir dois novos objetos de partida.
     
      */
-    
     //@Test
     public void testPersistenciaListPartida() throws Exception {
         PersistenciaJPA persistencia = new PersistenciaJPA();
@@ -91,8 +90,8 @@ public class TestPersistenceJPA {
             if (!list.isEmpty()) { // se a lista não for vazia
                 for (Partida end : list) {
                     // 2) imprimir os dados cada objeto
-                    System.out.println("Partida: " + end.getId() + " | " + end.getInicio() +
-                            " | " + end.getJogador() + "\n");
+                    System.out.println("Partida: " + end.getId() + " | " + end.getInicio()
+                            + " | " + end.getJogador() + "\n");
                     // 2) alterar
                     Partida p = new Partida(); // inicializa partida
                     p.setInicio(Calendar.getInstance()); // seta data na partida
@@ -146,4 +145,88 @@ public class TestPersistenceJPA {
             System.out.println("Nao abriu a conexao com o BD via JPA");
         }
     }
+
+    /*
+        Correção da atividade:
+     */
+    
+    //metodo de acesso privado(somente dentro dessa classe) que recebe dois parametros. Retorna o jogador. Se nao existir na tabela, persiste antes de retornar.
+    private Jogador
+            getJogador(PersistenciaJPA persistencia, String nickname) throws Exception {
+
+        Jogador j = (Jogador) persistencia.find(Jogador.class,
+                 nickname);
+        if (j
+                == null) {
+            j = new Jogador();
+            j.setNickname(nickname);
+            j.setData_cadastro(Calendar.getInstance());
+            j.setSenha("123");
+            persistencia.persist(j);
+
+        }
+
+        return j;
+
+    }
+
+    @Test
+    public void testPersistenciaListPartida_atividadeassincrona0705() throws Exception {
+
+        PersistenciaJPA persistencia = new PersistenciaJPA();
+        if (persistencia.conexaoAberta()) {
+            System.out.println("abriu a conexao com o BD via JPA");
+
+            //recupera a lista de partidas pela consulta nomeada.
+            List<Partida> list = persistencia.listPartidas();
+
+            //se nao contiver registros na tabela tb_partida
+            if (list == null || list.isEmpty()) {
+
+                Partida p = new Partida();
+                p.setInicio(Calendar.getInstance());
+                p.setJogador(getJogador(persistencia, "teste@"));
+
+                //persiste uma nova partida
+                persistencia.persist(p);
+
+                System.out.println("Cadastrou a partida: " + p.getId());
+
+                p = new Partida();
+                p.setInicio(Calendar.getInstance());
+                p.setJogador(getJogador(persistencia, "teste@"));
+
+                //persiste uma nova partida
+                persistencia.persist(p);
+
+                System.out.println("Cadastrou a partida: " + p.getId());
+
+            } else {
+
+                for (Partida p : list) {
+                    System.out.println("Partida: " + p.getId());
+                    System.out.println("\t Jogador: " + p.getJogador().getNickname());
+
+                    p.setFim(Calendar.getInstance());
+
+                    //altera a partida.
+                    persistencia.persist(p);
+                    System.out.println("Alterou a partida " + p.getId());
+
+                    //remove a partida.
+                    persistencia.remover(p);
+
+                    System.out.println("Remvou a partida " + p.getId());
+                }
+            }
+
+            persistencia.fecharConexao();
+
+            System.out.println("fechou a conexao com o BD via JPA");
+
+        } else {
+            System.out.println("Nao abriu a conexao com o BD via JPA");
+        }
+    }
+
 }
