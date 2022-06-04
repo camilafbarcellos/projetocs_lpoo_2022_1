@@ -1,12 +1,16 @@
 package br.edu.ifsul.cc.lpoo.cs.model.dao;
 
+import br.edu.ifsul.cc.lpoo.cs.model.Arma;
 import br.edu.ifsul.cc.lpoo.cs.model.Artefato;
+import br.edu.ifsul.cc.lpoo.cs.model.Calibre;
 import br.edu.ifsul.cc.lpoo.cs.model.Compra;
 import br.edu.ifsul.cc.lpoo.cs.model.Endereco;
 import br.edu.ifsul.cc.lpoo.cs.model.ItensCompra;
 import br.edu.ifsul.cc.lpoo.cs.model.Jogador;
+import br.edu.ifsul.cc.lpoo.cs.model.Municao;
 import br.edu.ifsul.cc.lpoo.cs.model.Partida;
 import br.edu.ifsul.cc.lpoo.cs.model.Patente;
+import br.edu.ifsul.cc.lpoo.cs.model.Tipo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -155,9 +159,76 @@ public class PersistenciaJDBC implements InterfacePersistencia {
 
                 return e;
             }
-        }
+        } else if (c == Artefato.class) {
 
-        // testar as demais classes do pacote model
+            PreparedStatement ps = this.con.prepareStatement("select id, nome, peso, valor, tipo from tb_artefato where id = ?");
+
+            ps.setInt(1, Integer.parseInt(id.toString()));
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                if (rs.getString("tipo").equals("A")) {
+                    Arma a = new Arma();
+                    a.setId(rs.getInt("id"));
+                    a.setNome(rs.getString("nome"));
+                    a.setValor(rs.getFloat("valor"));
+                    a.setTipoArtefato("A");
+
+                    PreparedStatement ps2 = this.con.prepareStatement("select comprimento_cano, tipo from tb_arma where id = ?");
+
+                    ps2.setInt(1, Integer.parseInt(id.toString()));
+
+                    ResultSet rs2 = ps2.executeQuery();
+
+                    if (rs2.next()) {
+
+                        a.setComprimento_cano(rs2.getFloat("comprimento_cano"));
+                        if (rs2.getString("tipo").equals(Tipo.FOGO)) {
+                            a.setTipo(Tipo.FOGO);
+                        } else if (rs2.getString("tipo").equals(Tipo.BRANCA)) {
+                            a.setTipo(Tipo.BRANCA);
+                        }
+                    }
+                    rs2.close();
+
+                    return a;
+
+                } else if (rs.getString("tipo").equals("M")) {
+                    Municao m = new Municao();
+                    m.setId(rs.getInt("id"));
+                    m.setNome(rs.getString("nome"));
+                    m.setValor(rs.getFloat("valor"));
+                    m.setTipoArtefato("M");
+
+                    PreparedStatement ps2 = this.con.prepareStatement("select calibre, explosiva from tb_municao where id = ?");
+
+                    ps2.setInt(1, Integer.parseInt(id.toString()));
+
+                    ResultSet rs2 = ps2.executeQuery();
+
+                    if (rs2.next()) {
+
+                        m.setExplosiva(rs2.getBoolean("explosiva"));
+                        if (rs2.getString("calibre").equals(Calibre.C03)) {
+                            m.setCalibre(Calibre.C03);
+                        } else if (rs2.getString("calibre").equals(Calibre.C05)) {
+                            m.setCalibre(Calibre.C05);
+                        } else if (rs2.getString("calibre").equals(Calibre.C08)) {
+                            m.setCalibre(Calibre.C08);
+                        }
+                    }
+                    rs2.close();
+
+                    return m;
+                }
+
+            }
+
+            ps.close();
+
+        }
         return null;
     }
 
@@ -410,6 +481,73 @@ public class PersistenciaJDBC implements InterfacePersistencia {
                 j.setPatente(p);
             }
 
+            PreparedStatement ps3 = this.con.prepareStatement("select a.id, a.nome, a.peso, a.valor, a.tipo from tb_jogador_artefato ja, tb_artefato a where a.id=ja.artefato_id and ja.jogador_nickname = ? ");
+            ps3.setString(1, j.getNickname());
+
+            ResultSet rs3 = ps3.executeQuery();
+
+            while (rs3.next()) {
+
+                if (rs3.getString("tipo").equals("A")) {
+
+                    Arma a = new Arma();
+                    a.setId(rs3.getInt("id"));
+                    a.setNome(rs3.getString("nome"));
+                    a.setValor(rs3.getFloat("valor"));
+                    a.setTipoArtefato("A");
+
+                    PreparedStatement ps4 = this.con.prepareStatement("select comprimento_cano, tipo from tb_arma where id = ?");
+
+                    ps4.setInt(1, a.getId());
+
+                    ResultSet rs4 = ps4.executeQuery();
+
+                    if (rs4.next()) {
+
+                        a.setComprimento_cano(rs4.getFloat("comprimento_cano"));
+                        if (rs4.getString("tipo").equals(Tipo.FOGO)) {
+                            a.setTipo(Tipo.FOGO);
+                        } else if (rs4.getString("tipo").equals(Tipo.BRANCA)) {
+                            a.setTipo(Tipo.BRANCA);
+                        }
+                    }
+                    rs4.close();
+
+                    //adiciona a Arma na lista de armas do jogador.
+                    j.setArtefato(a);
+
+                } else if (rs3.getString("tipo").equals("M")) {
+
+                    Municao m = new Municao();
+                    m.setId(rs3.getInt("id"));
+                    m.setNome(rs3.getString("nome"));
+                    m.setValor(rs3.getFloat("valor"));
+                    m.setTipoArtefato("M");
+
+                    PreparedStatement ps4 = this.con.prepareStatement("select calibre, explosiva from tb_municao where id = ?");
+
+                    ps4.setInt(1, m.getId());
+
+                    ResultSet rs4 = ps4.executeQuery();
+
+                    if (rs2.next()) {
+
+                        m.setExplosiva(rs4.getBoolean("explosiva"));
+                        if (rs4.getString("calibre").equals(Calibre.C03)) {
+                            m.setCalibre(Calibre.C03);
+                        } else if (rs4.getString("calibre").equals(Calibre.C05)) {
+                            m.setCalibre(Calibre.C05);
+                        } else if (rs4.getString("calibre").equals(Calibre.C08)) {
+                            m.setCalibre(Calibre.C08);
+                        }
+                    }
+                    rs4.close();
+
+                    j.setArtefato(m);
+                }
+
+            }
+
             lista.add(j);
 
         }
@@ -444,6 +582,7 @@ public class PersistenciaJDBC implements InterfacePersistencia {
 
     }
 
+    /*
     @Override
     public List<Artefato> listArtefatos() throws Exception {
 
@@ -471,7 +610,8 @@ public class PersistenciaJDBC implements InterfacePersistencia {
         return lista;
 
     }
-
+     */
+    
     @Override
     public List<Compra> listCompras() throws Exception {
 

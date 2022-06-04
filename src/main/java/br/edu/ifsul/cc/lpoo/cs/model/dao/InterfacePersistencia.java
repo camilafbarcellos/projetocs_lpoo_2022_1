@@ -34,7 +34,7 @@ public interface InterfacePersistencia {
 
     public List<Patente> listPatentes() throws Exception;
 
-    public List<Artefato> listArtefatos() throws Exception;
+    //public List<Artefato> listArtefatos() throws Exception;
 
     public List<Compra> listCompras() throws Exception;
 

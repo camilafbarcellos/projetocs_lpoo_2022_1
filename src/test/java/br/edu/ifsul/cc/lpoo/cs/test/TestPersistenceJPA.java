@@ -14,7 +14,7 @@ import org.junit.Test;
  */
 public class TestPersistenceJPA {
 
-    @Test
+    //@Test
     public void testConexaoGeracaoTabelas() {
         PersistenciaJPA persistencia = new PersistenciaJPA();
         if (persistencia.conexaoAberta()) {
@@ -80,6 +80,7 @@ public class TestPersistenceJPA {
         3) Se a lista de partidas for vazia, persistir dois novos objetos de partida.
     
      */
+    
     //@Test
     public void testPersistenciaListPartida() throws Exception {
         PersistenciaJPA persistencia = new PersistenciaJPA();
@@ -150,32 +151,47 @@ public class TestPersistenceJPA {
         Correção da atividade:
      */
     
-    //metodo de acesso privado(somente dentro dessa classe) que recebe dois parametros. Retorna o jogador. Se nao existir na tabela, persiste antes de retornar.
-    private Jogador
-            getJogador(PersistenciaJPA persistencia, String nickname) throws Exception {
-
-        Jogador j = (Jogador) persistencia.find(Jogador.class,
-                 nickname);
-        if (j
-                == null) {
+    private Endereco getEndereco(PersistenciaJPA persistencia, Integer id) throws Exception {
+        /* passa persistência por parâmetro por economia de espaço/processamento
+           como já existe, obrigatoriamente, o objeto persistencia em testPersistenciaListPartida,
+           economiza-se conexões com o BD ao reaproveitar algo já criado */
+        Endereco e = (Endereco) persistencia.find(Endereco.class, id);
+        if (e == null) {
+            e = new Endereco();
+            //e.setId(id);
+            e.setCep("99064070");
+            //e.setComplemento("nenhum"); // nullable true, não é obrigatório
+            persistencia.persist(e);
+        }
+        
+        return e;
+    }
+    
+    // método de acesso privado(somente dentro dessa classe) que recebe dois parametros
+    // Retorna o jogador. Se nao existir na tabela, persiste antes de retornar.
+    private Jogador getJogador(PersistenciaJPA persistencia, String nickname) throws Exception {
+        /* passa persistência por parâmetro por economia de espaço/processamento
+           como já existe, obrigatoriamente, o objeto persistencia em testPersistenciaListPartida,
+           economiza-se conexões com o BD ao reaproveitar algo já criado */
+        Jogador j = (Jogador) persistencia.find(Jogador.class, nickname);
+        if (j == null) {
             j = new Jogador();
             j.setNickname(nickname);
             j.setData_cadastro(Calendar.getInstance());
             j.setSenha("123");
+            j.setEndereco(getEndereco(persistencia, 1));
             persistencia.persist(j);
-
         }
 
         return j;
-
     }
 
-    @Test
+    //@Test
     public void testPersistenciaListPartida_atividadeassincrona0705() throws Exception {
 
         PersistenciaJPA persistencia = new PersistenciaJPA();
         if (persistencia.conexaoAberta()) {
-            System.out.println("abriu a conexao com o BD via JPA");
+            System.out.println("Abriu a conexão com o BD via JPA");
 
             //recupera a lista de partidas pela consulta nomeada.
             List<Partida> list = persistencia.listPartidas();
@@ -185,16 +201,16 @@ public class TestPersistenceJPA {
 
                 Partida p = new Partida();
                 p.setInicio(Calendar.getInstance());
-                p.setJogador(getJogador(persistencia, "teste@"));
+                p.setJogador(getJogador(persistencia, "jog@1")); // seta o jogador com o método get
 
                 //persiste uma nova partida
                 persistencia.persist(p);
 
                 System.out.println("Cadastrou a partida: " + p.getId());
 
-                p = new Partida();
+                p = new Partida(); // p recebe uma nova instância/registro
                 p.setInicio(Calendar.getInstance());
-                p.setJogador(getJogador(persistencia, "teste@"));
+                p.setJogador(getJogador(persistencia, "jog@2"));
 
                 //persiste uma nova partida
                 persistencia.persist(p);
@@ -202,7 +218,7 @@ public class TestPersistenceJPA {
                 System.out.println("Cadastrou a partida: " + p.getId());
 
             } else {
-
+                // mostra as partidas
                 for (Partida p : list) {
                     System.out.println("Partida: " + p.getId());
                     System.out.println("\t Jogador: " + p.getJogador().getNickname());
@@ -216,16 +232,16 @@ public class TestPersistenceJPA {
                     //remove a partida.
                     persistencia.remover(p);
 
-                    System.out.println("Remvou a partida " + p.getId());
+                    System.out.println("Removeu a partida " + p.getId());
                 }
             }
 
             persistencia.fecharConexao();
 
-            System.out.println("fechou a conexao com o BD via JPA");
+            System.out.println("Fechou a conexão com o BD via JPA");
 
         } else {
-            System.out.println("Nao abriu a conexao com o BD via JPA");
+            System.out.println("Não abriu a conexão com o BD via JPA");
         }
     }
 

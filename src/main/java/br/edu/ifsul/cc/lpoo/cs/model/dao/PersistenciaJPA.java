@@ -1,6 +1,5 @@
 package br.edu.ifsul.cc.lpoo.cs.model.dao;
 
-import br.edu.ifsul.cc.lpoo.cs.model.Artefato;
 import br.edu.ifsul.cc.lpoo.cs.model.Compra;
 import br.edu.ifsul.cc.lpoo.cs.model.Endereco;
 import br.edu.ifsul.cc.lpoo.cs.model.Jogador;
@@ -84,11 +83,6 @@ public class PersistenciaJPA implements InterfacePersistencia {
 
     @Override
     public List<Patente> listPatentes() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<Artefato> listArtefatos() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

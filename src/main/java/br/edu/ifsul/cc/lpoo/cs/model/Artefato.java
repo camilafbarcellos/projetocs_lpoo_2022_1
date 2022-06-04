@@ -25,7 +25,7 @@ import javax.persistence.Transient;
 @Inheritance(strategy = InheritanceType.JOINED) // notação que indica herança e estratégia -> deve ser colocada na superclasse
 // neste projeto, ou o Artefato é Arma ou é Munição, não pode ser ambos -> indica estratégia JOINED (uma tabela para cada)
 @DiscriminatorColumn(name = "tipo") // informação sobre tipo de especialização (JOINED)
-public class Artefato implements Serializable {
+public abstract class Artefato implements Serializable { // abstrata porque ou é arma ou municao
     
     @Id
     @SequenceGenerator(name = "seq_artefato", sequenceName = "seq_artefato_id", allocationSize = 1) // denomina sequenciador 1 em 1 no PostgreSQL
