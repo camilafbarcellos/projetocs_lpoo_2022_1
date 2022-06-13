@@ -562,7 +562,7 @@ public class PersistenciaJDBC implements InterfacePersistencia {
 
         PreparedStatement ps = this.con.prepareStatement("select id, cor, nome from tb_patente order by id asc");
 
-        ResultSet rs = ps.executeQuery();//executa a query        
+        ResultSet rs = ps.executeQuery(); //executa a query        
 
         lista = new ArrayList();
         while (rs.next()) {
@@ -581,43 +581,13 @@ public class PersistenciaJDBC implements InterfacePersistencia {
         return lista;
 
     }
-
-    /*
-    @Override
-    public List<Artefato> listArtefatos() throws Exception {
-
-        List<Artefato> lista = null;
-
-        PreparedStatement ps = this.con.prepareStatement("select id, nome, peso, valor from tb_artefato order by id asc");
-
-        ResultSet rs = ps.executeQuery(); // executa a query        
-
-        lista = new ArrayList();
-        while (rs.next()) {
-
-            Artefato a = new Artefato();
-            a.setId(rs.getInt("id"));
-            a.setNome(rs.getString("nome"));
-            a.setPeso(rs.getFloat("peso"));
-            a.setValor(rs.getFloat("valor"));
-
-            lista.add(a);
-
-        }
-
-        rs.close();
-
-        return lista;
-
-    }
-     */
     
     @Override
     public List<Compra> listCompras() throws Exception {
 
         List<Compra> lista = null;
 
-        PreparedStatement ps = this.con.prepareStatement("select id, data, total, itens, jogador from tb_artefato order by id asc");
+        PreparedStatement ps = this.con.prepareStatement("select id, data_compra, total, itens, jogador from tb_artefato order by id asc");
 
         ResultSet rs = ps.executeQuery(); // executa a query        
 
@@ -627,9 +597,9 @@ public class PersistenciaJDBC implements InterfacePersistencia {
             Compra c = new Compra();
             c.setId(rs.getInt("id"));
             //c.setData(rs.getDate("data")); // não funfa, converter de Calendar para Date
-            Calendar data = Calendar.getInstance();
-            data.setTimeInMillis(rs.getDate("data").getTime());
-            c.setData(data);
+            Calendar dtC = Calendar.getInstance();
+            dtC.setTimeInMillis(rs.getDate("data_compra").getTime());
+            c.setData_compra(dtC);
             c.setTotal(rs.getFloat("total"));
             // c.setItens((List<ItensCompra>) rs.getObject("itens")); // fazer abaixo           
             PreparedStatement ps2 = this.con.prepareStatement("select ic.id, ic.quantidade, ic.valor from tb_compra_itenscompra cic, tb_compra c where c.id=cic.itens_id and cic.compra_id = ? ");
@@ -642,10 +612,28 @@ public class PersistenciaJDBC implements InterfacePersistencia {
                 ic.setQuantidade(rs2.getFloat("quantidade"));
                 ic.setValor(rs2.getFloat("valor"));
 
+                rs2.close();
+                
                 c.setItem(ic);
             }
             lista.add(c);
-            // c.setJogador((Jogador) rs.getObject("jogador")); // fazer abaixo
+            //c.setJogador((Jogador) rs.getObject("jogador")); // fazer abaixo
+            PreparedStatement ps3 = this.con.prepareStatement("select j.nickname, j.data_cadastro, j.senha from tb_jogador where c.jogador_nickame = j.nickname");
+            ps3.setInt(1, c.getId());
+            ResultSet rs3 = ps3.executeQuery();
+            while (rs3.next()) {
+
+                Jogador j = new Jogador();
+                j.setNickname(rs3.getString("nickname"));
+                Calendar dtCad = Calendar.getInstance();
+                dtCad.setTimeInMillis(rs.getDate("data_cadastro").getTime());
+                j.setData_cadastro(dtCad);
+                j.setSenha(rs3.getString("senha"));
+                
+                rs3.close();
+                
+                c.setJogador(j);
+            }
 
         }
 

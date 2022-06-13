@@ -3,12 +3,15 @@ package br.edu.ifsul.cc.lpoo.cs.test;
 import br.edu.ifsul.cc.lpoo.cs.model.Arma;
 import br.edu.ifsul.cc.lpoo.cs.model.Artefato;
 import br.edu.ifsul.cc.lpoo.cs.model.Calibre;
+import br.edu.ifsul.cc.lpoo.cs.model.Compra;
 import br.edu.ifsul.cc.lpoo.cs.model.Endereco;
+import br.edu.ifsul.cc.lpoo.cs.model.ItensCompra;
 import br.edu.ifsul.cc.lpoo.cs.model.Jogador;
 import br.edu.ifsul.cc.lpoo.cs.model.Municao;
 import br.edu.ifsul.cc.lpoo.cs.model.Patente;
 import br.edu.ifsul.cc.lpoo.cs.model.Tipo;
 import br.edu.ifsul.cc.lpoo.cs.model.dao.PersistenciaJDBC;
+import java.util.Calendar;
 import java.util.List;
 import org.junit.Test;
 
@@ -32,7 +35,7 @@ public class TestPersistenceJDBC {
     /*
         Atividade de aula - 09/05/2022
     
-        Implememtar um método de teste para realizar as seguintes operações:
+        Implementar um método de teste para realizar as seguintes operações:
     
         1) Abrir conexão via JDBC
         2) Selecionar um determinado registro na tabela tb_endereco
@@ -95,11 +98,14 @@ public class TestPersistenceJDBC {
     //@Test
     public void testListPersistenciaJogadorPatente() throws Exception {
 
-        // recupera a lista de jogadores
-        // imprimir na tela os dados de cada jogador e as suas respectivas patentes
-        // alterar o jogador ao algum dado da tabela associativa.    
-        // remove as patentes do jogador (tb_jogador_patente), uma a uma 
-        // caso a lista de jogadores esteja vazia, insere um ou mais jogadores , bem como, vincula ao menos uma patente no jogador (tb_jogador_patente)        
+        /*
+            recupera a lista de jogadores
+            imprimir na tela os dados de cada jogador e as suas respectivas patentes
+            alterar o jogador ao algum dado da tabela associativa.    
+            remove as patentes do jogador (tb_jogador_patente), uma a uma 
+            caso a lista de jogadores esteja vazia, insere um ou mais jogadores , bem como, vincula ao menos uma patente no jogador (tb_jogador_patente)
+        */
+                
         PersistenciaJDBC persistencia = new PersistenciaJDBC();
         if (persistencia.conexaoAberta()) {
             System.out.println("abriu a conexao com o BD via JDBC");
@@ -164,79 +170,17 @@ public class TestPersistenceJDBC {
 
     }
 
-    //@Test
-    public void testListPersistenciaJogadorArtefatoTESTE() throws Exception {
-
-        // 1) Atividade de revisão para a avaliação da primeira etapa. 
-        // recupera a lista de jogadores
-        // imprimir na tela os dados de cada jogador e as suas respectivos artefatos (arma e/ou municao)
-        // remove os artefatos do jogador (tb_jogador_artefato), um a um
-        // caso a lista de jogadores esteja vazia, gera um jogador contendo dois artefatos. 
-        PersistenciaJDBC persistencia = new PersistenciaJDBC();
-        if (persistencia.conexaoAberta()) {
-            System.out.println("abriu a conexao com o BD via JDBC");
-            // recupera a lista de jogadores
-            List<Jogador> list = persistencia.listJogadores();
-
-            if (!list.isEmpty()) {
-                // imprimr os dados do jogador e seus artefatos
-                for (Jogador j : list) {
-                    // dados do jogador
-                    System.out.println("Jogador : " + j.getNickname());
-                    System.out.println("Endereço: " + j.getEndereco().getCep());
-
-                    if (j.getArtefatos() != null) {
-                        for (Artefato a : j.getArtefatos()) {
-                            // artefatos
-                            System.out.println("\tArtefato : " + a.getNome());
-                            //persistencia.remover(a); // remove o artefato
-
-                        }
-                    }
-
-                    // remove o artefato do jogador (remove todos ao remover o próprio jogador)
-                    persistencia.remover(j);
-
-                    System.out.println(" Jogador removido : " + j.getNickname());
-                }
-
-            } else { // caso lista vazia
-                // gera um jogador
-                Jogador j = new Jogador();
-                j.setNickname("teste@");
-                j.setSenha("123456");
-                j.setPontos(0);
-                Endereco end = new Endereco();
-                end.setCep("99010010");
-                // persiste o jogador
-                persistencia.persist(end);
-                j.setEndereco(end);
-                // gera um artefato
-                /*
-                Artefato a = new Artefato();
-                a.setNome("Artefato de teste");
-                persistencia.persist(a);
-
-                j.setArtefato(a);
-                persistencia.persist(j);
-                */
-                System.out.println("Incluiu o jogador " + j.getNickname() + " com " + j.getArtefatos().size() + " artefatos.");
-
-            }
-
-            persistencia.fecharConexao();
-
-        } else {
-            System.out.println("Nao abriu a conexao com o BD via JDBC");
-        }
-    }
-
     /*
-        Correção do professor:
-    */
+        1) Atividade de revisão para a avaliação da primeira etapa. 
+        recupera a lista de jogadores
+        imprimir na tela os dados de cada jogador e as suas respectivos artefatos (arma e/ou municao)
+        remove os artefatos do jogador (tb_jogador_artefato), um a um
+        caso a lista de jogadores esteja vazia, gera um jogador contendo dois artefatos.
     
+        Correção do professor:
+     */
     private Artefato getArtefato(PersistenciaJDBC persistencia, Integer id, String tipo) throws Exception {
-            // artefato está envolvido em heranças (arma e municao)
+        // artefato está envolvido em heranças (arma e municao)
         Artefato a = (Artefato) persistencia.find(Artefato.class, id);
         if (a == null) { // nenhuma arma
             if (tipo.equals("A")) { // se for tipo A-arma
@@ -272,7 +216,7 @@ public class TestPersistenceJDBC {
         Endereco e = (Endereco) persistencia.find(Endereco.class, id);
         if (e == null) {
             e = new Endereco();
-            //e.setId(id);
+            //e.setId(id); // não precisa pq id é gerado
             e.setCep("99010011");
             e.setComplemento("nenhum");
             persistencia.persist(e);
@@ -290,16 +234,20 @@ public class TestPersistenceJDBC {
         if (persistencia.conexaoAberta()) {
             System.out.println("Abriu a conexão com o BD via JDBC");
 
+            // recupera a lista de jogadores
             List<Jogador> list = persistencia.listJogadores();
 
+            // caso a lista de jogadores esteja vazia
             if (list == null || list.isEmpty()) {
 
+                // gera um jogador contendo dois artefatos
                 Jogador j = new Jogador();
                 j.setNickname("fulano@");
                 j.setSenha("123456");
                 j.setPontos(0);
                 j.setEndereco(getEndereco(persistencia, 1));
                 j.setArtefato(getArtefato(persistencia, 1, "A"));
+                j.setArtefato(getArtefato(persistencia, 2, "M"));
 
                 persistencia.persist(j);
 
@@ -307,6 +255,7 @@ public class TestPersistenceJDBC {
 
             } else {
 
+                // imprimir na tela os dados de cada jogador e as suas respectivos artefatos (arma e/ou municao)
                 System.out.println("Listagem de jogadores cadastrados:");
                 for (Jogador j : list) {
 
@@ -318,6 +267,7 @@ public class TestPersistenceJDBC {
                         }
                     }
 
+                    // remove os artefatos do jogador (tb_jogador_artefato), um a um
                     persistencia.remover(j);
                     System.out.println("Removeu o jogador " + j.getNickname());
                 }
@@ -330,15 +280,90 @@ public class TestPersistenceJDBC {
             System.out.println("Não abriu a conexão com o BD via JDBC");
         }
     }
+  
+    /*
+        2) Atividade de revisão para a avaliação da primeira etapa. 
+        recupera a lista de compras
+        imprimir na tela os dados de cada compra e as seus respectivos itens
+        remova os itens e a compra
+        caso a lista de compra esteja vazia, gera uma compra contendo itens.
+    */
+            
+    private Jogador getJogador(PersistenciaJDBC persistencia, String nickname) throws Exception {
+        Jogador j = (Jogador) persistencia.find(Jogador.class, nickname);
+        if (j == null) {
+            j = new Jogador();
+            j.setNickname(nickname);
+            j.setData_cadastro(Calendar.getInstance());
+            j.setSenha("123");
+            j.setEndereco(getEndereco(persistencia, 1));
+            persistencia.persist(j);
+        }
 
-    //@Test
+        return j;
+    }
+    
+    private ItensCompra getItem(PersistenciaJDBC persistencia, Integer id) throws Exception {
+        ItensCompra i = (ItensCompra) persistencia.find(ItensCompra.class, id);
+        if (i == null) {
+            i = new ItensCompra();
+            i.setQuantidade(5f);
+            i.setValor(100f);
+            i.setArtefato(getArtefato(persistencia, 1, "M"));
+            persistencia.persist(i);
+        }
+
+        return i;
+    }
+    
+    @Test
     public void testListPersistenciaCompra() throws Exception {
 
-        // 2) Atividade de revisão para a avaliação da primeira etapa. 
-        // recupera a lista de compras
-        // imprimir na tela os dados de cada compra e as seus respectivos itens
-        // remova os itens e a compra
-        // caso a lista de compra esteja vazia, gera uma compra contendo itens. 
-    }
+        PersistenciaJDBC persistencia = new PersistenciaJDBC();
+        if (persistencia.conexaoAberta()) {
+            System.out.println("Abriu a conexão com o BD via JDBC");
 
+            // recupera a lista de compras
+            List<Compra> list = persistencia.listCompras();
+
+            // caso a lista de compras esteja vazia
+            if (list == null || list.isEmpty()) {
+
+                // gera uma compra contendo itens
+                Compra c = new Compra();
+                c.setData_compra(Calendar.getInstance());
+                c.setItem(getItem(persistencia, 1));
+                c.setJogador(getJogador(persistencia, "joga@dor"));
+
+                persistencia.persist(c);
+
+                System.out.println("Cadastrou a compra " + c.getId());
+
+            } else {
+
+                // imprimir na tela os dados de cada compra e as seus respectivos itens
+                System.out.println("Listagem de compras cadastradas:");
+                for (Compra c : list) {
+
+                    System.out.println("\tCompra: " + c.getId());
+                    System.out.println("\t\tItens:");
+                    if (c.getItens()!= null) {
+                        for (ItensCompra i : c.getItens()) {
+                            System.out.println("\t\t\tItem " + i.getArtefatoNome());
+                        }
+                    }
+
+                    // remova os itens e a compra
+                    persistencia.remover(c);
+                    System.out.println("Removeu a compra " + c.getId());
+                }
+
+            }
+
+            persistencia.fecharConexao();
+
+        } else {
+            System.out.println("Não abriu a conexão com o BD via JDBC");
+        }
+    }
 }

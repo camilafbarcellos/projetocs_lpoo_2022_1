@@ -82,7 +82,7 @@ public class TestPersistenceJPA {
      */
     
     //@Test
-    public void testPersistenciaListPartida() throws Exception {
+    public void testPersistenciaListPartidaCAMILA() throws Exception {
         PersistenciaJPA persistencia = new PersistenciaJPA();
         if (persistencia.conexaoAberta()) {
             System.out.println("testPersistenciaListPartida:");
@@ -148,8 +148,17 @@ public class TestPersistenceJPA {
     }
 
     /*
+        1) Recuperar a lista de partidas.
+        2) Se a lista de partidas não for vazia, imprimir na tela os dados de cada objeto, altere e depois remova-o.
+        3) Se a lista de partidas for vazia, persistir dois novos objetos de partida.
+    
         Correção da atividade:
      */
+    
+    /*
+        Partida possui associação com Jogador -> método private Jogador getJogador
+        Jogador possui associação com Endereco -> método private Endereco getEndereco
+    */
     
     private Endereco getEndereco(PersistenciaJPA persistencia, Integer id) throws Exception {
         /* passa persistência por parâmetro por economia de espaço/processamento
@@ -187,7 +196,7 @@ public class TestPersistenceJPA {
     }
 
     //@Test
-    public void testPersistenciaListPartida_atividadeassincrona0705() throws Exception {
+    public void testPersistenciaListPartida() throws Exception {
 
         PersistenciaJPA persistencia = new PersistenciaJPA();
         if (persistencia.conexaoAberta()) {

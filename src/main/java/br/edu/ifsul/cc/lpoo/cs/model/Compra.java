@@ -32,7 +32,7 @@ public class Compra implements Serializable {
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Calendar data;
+    private Calendar data_compra;
 
     @Column(precision = 2, nullable = true)
     private Float total;
@@ -63,17 +63,17 @@ public class Compra implements Serializable {
     }
 
     /**
-     * @return the data
+     * @return the data_compra
      */
-    public Calendar getData() {
-        return data;
+    public Calendar getData_compra() {
+        return data_compra;
     }
 
     /**
-     * @param data the data to set
+     * @param data_compra the data_compra to set
      */
-    public void setData(Calendar data) {
-        this.data = data;
+    public void setData_compra(Calendar data_compra) {
+        this.data_compra = data_compra;
     }
 
     /**

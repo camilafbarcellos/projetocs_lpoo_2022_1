@@ -32,7 +32,7 @@ public class ItensCompra implements Serializable {
     private String quantidade;
 */
 
-    @Column(nullable = false, precision = 2)
+    @Column(precision = 2, nullable = false)
     private Float valor;
 
     @ManyToOne
@@ -94,6 +94,10 @@ public class ItensCompra implements Serializable {
      */
     public Artefato getArtefato() {
         return artefato;
+    }
+    
+    public String getArtefatoNome() {
+        return artefato.getNome();
     }
 
     /**
