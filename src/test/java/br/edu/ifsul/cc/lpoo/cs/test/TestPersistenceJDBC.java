@@ -316,7 +316,7 @@ public class TestPersistenceJDBC {
         return i;
     }
     
-    @Test
+    //@Test
     public void testListPersistenciaCompra() throws Exception {
 
         PersistenciaJDBC persistencia = new PersistenciaJDBC();
