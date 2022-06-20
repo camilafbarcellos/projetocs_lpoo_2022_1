@@ -417,7 +417,25 @@ public class PersistenciaJDBC implements InterfacePersistencia {
 
     @Override
     public Jogador doLogin(String nickname, String senha) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        Jogador j = null;
+
+        PreparedStatement ps = this.con.prepareStatement("select nickname, senha from tb_jogador where nickname = ? and senha = ? ");
+
+        ps.setString(1, nickname);
+        ps.setString(2, senha);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            j = new Jogador();
+            j.setNickname(rs.getString("nickname"));
+            j.setSenha(rs.getString("senha"));
+        }
+
+        ps.close();
+
+        return j;
     }
 
     @Override
@@ -581,7 +599,7 @@ public class PersistenciaJDBC implements InterfacePersistencia {
         return lista;
 
     }
-    
+
     @Override
     public List<Compra> listCompras() throws Exception {
 
@@ -613,7 +631,7 @@ public class PersistenciaJDBC implements InterfacePersistencia {
                 ic.setValor(rs2.getFloat("valor"));
 
                 rs2.close();
-                
+
                 c.setItem(ic);
             }
             lista.add(c);
@@ -629,9 +647,9 @@ public class PersistenciaJDBC implements InterfacePersistencia {
                 dtCad.setTimeInMillis(rs.getDate("data_cadastro").getTime());
                 j.setData_cadastro(dtCad);
                 j.setSenha(rs3.getString("senha"));
-                
+
                 rs3.close();
-                
+
                 c.setJogador(j);
             }
 
