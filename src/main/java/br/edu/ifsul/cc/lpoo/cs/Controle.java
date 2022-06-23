@@ -80,7 +80,7 @@ public class Controle {
                 JOptionPane.showMessageDialog(telaAutenticacao, "Dados inválidos!", "Autenticação", JOptionPane.INFORMATION_MESSAGE);
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
 
             JOptionPane.showMessageDialog(telaAutenticacao, "Erro ao executar a autenticação no Banco de Dados!", "Autenticação", JOptionPane.ERROR_MESSAGE);
 
