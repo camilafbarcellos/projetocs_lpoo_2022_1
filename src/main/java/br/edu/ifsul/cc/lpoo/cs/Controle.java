@@ -1,10 +1,11 @@
 package br.edu.ifsul.cc.lpoo.cs;
 
 import br.edu.ifsul.cc.lpoo.cs.gui.JFramePrincipal;
+import br.edu.ifsul.cc.lpoo.cs.gui.JMenuBarHome;
+import br.edu.ifsul.cc.lpoo.cs.gui.JPanelHome;
 import br.edu.ifsul.cc.lpoo.cs.gui.autenticacao.JPanelAutenticacao;
 import br.edu.ifsul.cc.lpoo.cs.model.Jogador;
 import br.edu.ifsul.cc.lpoo.cs.model.dao.PersistenciaJDBC;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,6 +20,10 @@ public class Controle {
     private JPanelAutenticacao telaAutenticacao; // tela de autenticação
 
     private JFramePrincipal frame; // frame principal da minha aplicação gráfica
+    
+    private JMenuBarHome menuBar;
+    
+    private JPanelHome telaHome; // tela inicial
 
     public Controle() {
         // construtor em branco
@@ -35,6 +40,17 @@ public class Controle {
 
         return false;
     }
+    
+    public void fecharBD() {
+
+        System.out.println("Fechando conexão com o Banco de Dados");
+        getConexaoJDBC().fecharConexao();
+    }
+    
+    public void showTela(String nomeTela) {
+        
+        frame.showTela(nomeTela); // exibe a tela passada por parâmetro
+    }
 
     public void initComponents() {
 
@@ -45,9 +61,17 @@ public class Controle {
 
         // telaAutenticacao
         telaAutenticacao = new JPanelAutenticacao(this); // inicializa a tela
-        frame.addTela(telaAutenticacao, "tela_autenticacao"); // adiciona e nomeia a tela ao baralho de cartas
-        frame.showTela("tela_autenticacao"); // busca e exibe a tela -> tela padrão
 
+        // menuBar
+        menuBar = new JMenuBarHome(this);
+        
+        // telaHome
+        telaHome = new JPanelHome(this);
+        
+        frame.addTela(telaAutenticacao, "tela_autenticacao"); // adiciona e nomeia a tela ao baralho de cartas        
+        frame.addTela(telaHome, "tela_home"); // adiciona e nomeia a tela ao baralho de cartas
+        frame.showTela("tela_autenticacao"); // busca e exibe a tela -> tela padrão
+        
         frame.setVisible(true); // torna visível o jframe -> mostra a tela que está nele
 
     }
@@ -73,8 +97,12 @@ public class Controle {
 
             if (j != null) { // retorno não nulo
 
-                JOptionPane.showMessageDialog(telaAutenticacao, "Validação concluída com sucesso!", "Autenticação", JOptionPane.INFORMATION_MESSAGE);
-
+                JOptionPane.showMessageDialog(telaAutenticacao, "Jogador "+j.getNickname()+" autenticado com sucesso!", "Autenticação", JOptionPane.INFORMATION_MESSAGE);
+                
+                frame.setJMenuBar(menuBar); // adiciona o menu de barra no frame
+                frame.showTela("tela_home"); // muda a tela para o painel de boas vindas (home)
+                
+                
             } else { // retorno nulo
 
                 JOptionPane.showMessageDialog(telaAutenticacao, "Dados inválidos!", "Autenticação", JOptionPane.INFORMATION_MESSAGE);

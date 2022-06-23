@@ -88,8 +88,9 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
 
             //se o usuario clicou no menuitem Sair
             int d = JOptionPane.showConfirmDialog(this, "Deseja realmente sair do sistema? ", "Sair", JOptionPane.YES_NO_OPTION);
-            if (d == 0) {
-                //->controle.fecharBD();//fecha a conexao com o banco de dados.
+            // janela de confirmação com 0-sim e 1-não
+            if (d == 0) { // usuario clicou 0-sim
+                controle.fecharBD();//fecha a conexao com o banco de dados.
                 System.exit(0);//finaliza o processo do programa.
             }
 
@@ -99,7 +100,7 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
             //->controle.showTela("tela_jogador_a");          
         } else if (e.getActionCommand().equals(menuItemLogout.getActionCommand())) {
 
-            //->controle.showTela("tela_autenticacao");    
+            controle.showTela("tela_autenticacao"); // chama o método para mostrar tela de autenticação 
         } else if (e.getActionCommand().equals(menuItemJogadorDesigner.getActionCommand())) {
 
             //->controle.showTela("tela_jogador_designer");
