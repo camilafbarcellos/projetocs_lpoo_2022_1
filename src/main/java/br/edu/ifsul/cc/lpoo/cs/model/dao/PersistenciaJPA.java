@@ -65,7 +65,7 @@ public class PersistenciaJPA implements InterfacePersistencia {
     }
 
     @Override
-    public List<Endereco> listEnderecos() {
+    public List<Endereco> listEnderecos() throws Exception {
 
         return entity.createNamedQuery("Endereco.getbyid").getResultList();
     }

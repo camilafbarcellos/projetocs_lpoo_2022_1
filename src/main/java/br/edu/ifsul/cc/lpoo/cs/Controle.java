@@ -4,6 +4,7 @@ import br.edu.ifsul.cc.lpoo.cs.gui.JFramePrincipal;
 import br.edu.ifsul.cc.lpoo.cs.gui.JMenuBarHome;
 import br.edu.ifsul.cc.lpoo.cs.gui.JPanelHome;
 import br.edu.ifsul.cc.lpoo.cs.gui.autenticacao.JPanelAutenticacao;
+import br.edu.ifsul.cc.lpoo.cs.gui.jogador.JPanelAJogador;
 import br.edu.ifsul.cc.lpoo.cs.model.Jogador;
 import br.edu.ifsul.cc.lpoo.cs.model.dao.PersistenciaJDBC;
 import javax.swing.JOptionPane;
@@ -25,33 +26,42 @@ public class Controle {
     
     private JPanelHome telaHome; // tela inicial
 
+    private JPanelAJogador telaJogador; // tela de CRUD do jogador
+
     public Controle() {
         // construtor em branco
     }
-
+    
     public boolean conectarBD() throws Exception {
-
+        
         conexaoJDBC = new PersistenciaJDBC(); // inicializa o construtor da conexão JDBC
 
         if (getConexaoJDBC() != null) { // conexão true
 
             return getConexaoJDBC().conexaoAberta();
         }
-
+        
         return false;
     }
     
     public void fecharBD() {
-
+        
         System.out.println("Fechando conexão com o Banco de Dados");
         getConexaoJDBC().fecharConexao();
     }
     
     public void showTela(String nomeTela) {
+        // tela de jogador é subdividida em duas -> listagem e formulário CRUD
+        if (nomeTela.equals("tela_jogador")) { // caso chamada a tela de Jogador
+            // "sub-baralho" para alternar entre as duas cartas de telas
+            telaJogador.showTela("tela_jogador_listagem"); // prevalece mostrar a listagem
+            frame.showTela(nomeTela);
+        }
         
+        // método para mostrar outras telas -> Logout
         frame.showTela(nomeTela); // exibe a tela passada por parâmetro
     }
-
+    
     public void initComponents() {
 
         //"caminho feliz" : passo 5
@@ -64,12 +74,19 @@ public class Controle {
 
         // menuBar
         menuBar = new JMenuBarHome(this);
-        
+
         // telaHome
         telaHome = new JPanelHome(this);
-        
+
+        // telaJogador
+        telaJogador = new JPanelAJogador(this);
+
+        // baralho de cartas de telas
         frame.addTela(telaAutenticacao, "tela_autenticacao"); // adiciona e nomeia a tela ao baralho de cartas        
-        frame.addTela(telaHome, "tela_home"); // adiciona e nomeia a tela ao baralho de cartas
+        frame.addTela(telaHome, "tela_home");
+        frame.addTela(telaJogador, "tela_jogador");
+
+        // carta de tela padrão
         frame.showTela("tela_autenticacao"); // busca e exibe a tela -> tela padrão
         
         frame.setVisible(true); // torna visível o jframe -> mostra a tela que está nele
@@ -82,7 +99,7 @@ public class Controle {
     public PersistenciaJDBC getConexaoJDBC() {
         return conexaoJDBC;
     }
-
+    
     public void autenticar(String nickname, String senha) {
         /*
             implementar o método doLogin da classe PersistenciaJDBC;
@@ -90,29 +107,28 @@ public class Controle {
             se o retorno for nulo, informar ao usuário;
             se não for nulo, apresentar a tela de boas vindas e o menu.
          */
-
+        
         try {
-
+            
             Jogador j = conexaoJDBC.doLogin(nickname, senha); // chama o método doLogin
 
             if (j != null) { // retorno não nulo
 
-                JOptionPane.showMessageDialog(telaAutenticacao, "Jogador "+j.getNickname()+" autenticado com sucesso!", "Autenticação", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(telaAutenticacao, "Jogador " + j.getNickname() + " autenticado com sucesso!", "Autenticação", JOptionPane.INFORMATION_MESSAGE);
                 
                 frame.setJMenuBar(menuBar); // adiciona o menu de barra no frame
                 frame.showTela("tela_home"); // muda a tela para o painel de boas vindas (home)
-                
                 
             } else { // retorno nulo
 
                 JOptionPane.showMessageDialog(telaAutenticacao, "Dados inválidos!", "Autenticação", JOptionPane.INFORMATION_MESSAGE);
             }
-
+            
         } catch (Exception e) {
-
+            
             JOptionPane.showMessageDialog(telaAutenticacao, "Erro ao executar a autenticação no Banco de Dados!", "Autenticação", JOptionPane.ERROR_MESSAGE);
-
+            
         }
     }
-
+    
 }

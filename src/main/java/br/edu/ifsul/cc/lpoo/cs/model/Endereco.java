@@ -16,32 +16,31 @@ import javax.persistence.Table;
  * @author 20202pf.cc0003
  * @data : 11/04/2022
  */
-
 @Entity
 @Table(name = "tb_endereco")
 @NamedQueries({ // consultas nomeadas
-    @NamedQuery(name="Endereco.getbyid",
-               query="SELECT e From Endereco e order by e.id ")
+
+    @NamedQuery(name = "Endereco.getbyid",
+            query = "SELECT e From Endereco e order by e.id ")
 })
 public class Endereco implements Serializable {
-    
+
     @Id
     @SequenceGenerator(name = "seq_endereco", sequenceName = "seq_endereco_id", allocationSize = 1)
-    @GeneratedValue(generator = "seq_endereco", strategy = GenerationType.SEQUENCE)    
+    @GeneratedValue(generator = "seq_endereco", strategy = GenerationType.SEQUENCE)
     private Integer id;
-    
+
     @Column(nullable = false, length = 8)
     private String cep;
-    
+
     @Column(nullable = true, length = 100)
     private String complemento;
 
     public Endereco() { // constrtutor sem parâmetros
-        
+
     }
 
     // encapsular atributos em getters e setters
-
     /**
      * @return the id
      */
@@ -83,5 +82,29 @@ public class Endereco implements Serializable {
     public void setComplemento(String complemento) {
         this.complemento = complemento;
     }
-    
+
+    @Override
+    public String toString() {
+        return cep;
+    }
+
+    @Override
+    public boolean equals(Object o){
+
+        if(o == null){
+            return false;
+
+        }else if(!(o instanceof Endereco)){
+            return false;
+
+        }else{
+            Endereco e = (Endereco) o;
+            if (e.getId().intValue() == this.getId().intValue()){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
 }

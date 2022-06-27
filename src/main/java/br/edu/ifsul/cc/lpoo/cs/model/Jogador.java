@@ -214,4 +214,9 @@ public class Jogador implements Serializable {
         this.compras = compras;
     }
 
+    @Override
+    public String toString() {
+        return nickname;
+    }
+
 }
