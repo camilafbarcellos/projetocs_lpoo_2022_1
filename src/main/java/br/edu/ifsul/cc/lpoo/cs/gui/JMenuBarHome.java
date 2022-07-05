@@ -103,7 +103,7 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
             controle.showTela("tela_autenticacao"); // chama o método para mostrar tela de autenticação 
         } else if (e.getActionCommand().equals(menuItemJogadorDesigner.getActionCommand())) {
 
-            //->controle.showTela("tela_jogador_designer");
+            controle.showTela("tela_jogador_designer");
         }
 
     }

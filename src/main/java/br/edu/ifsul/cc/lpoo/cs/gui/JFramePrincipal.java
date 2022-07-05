@@ -46,7 +46,7 @@ public class JFramePrincipal extends JFrame implements WindowListener { // herda
         this.addWindowListener(this); //adiciona o listener no frame (classe que vai "escutar" os eventos na janela)
 
         cardLayout = new CardLayout(); //iniciando o gerenciador de layout para esta JFrame
-        // iniciar o painel
+        // inicializar o painel
         painel = new JPanel(); //inicializacao
         // adicionar o gerenciador de layout ao painel
         painel.setLayout(cardLayout); //definindo o cardLayout para o paineldeFundo
@@ -75,6 +75,9 @@ public class JFramePrincipal extends JFrame implements WindowListener { // herda
     public void windowClosing(WindowEvent we) { // chamado quando a janela é fechada
 
         System.out.println("Fechando o jframe ..");
+        
+        controle.fecharBD(); //fecha a conexao com o BD antes de finalizar o processo.
+
 
     }
 

@@ -5,6 +5,7 @@ import br.edu.ifsul.cc.lpoo.cs.gui.JMenuBarHome;
 import br.edu.ifsul.cc.lpoo.cs.gui.JPanelHome;
 import br.edu.ifsul.cc.lpoo.cs.gui.autenticacao.JPanelAutenticacao;
 import br.edu.ifsul.cc.lpoo.cs.gui.jogador.JPanelAJogador;
+import br.edu.ifsul.cc.lpoo.cs.gui.jogador.designer.JPanelDJogador;
 import br.edu.ifsul.cc.lpoo.cs.model.Jogador;
 import br.edu.ifsul.cc.lpoo.cs.model.dao.PersistenciaJDBC;
 import javax.swing.JOptionPane;
@@ -28,6 +29,8 @@ public class Controle {
 
     private JPanelAJogador telaJogador; // tela de CRUD do jogador
 
+    private JPanelDJogador telaJogadorDesigner; // tela de CRUD do jogador feita no modo designer
+    
     public Controle() {
         // construtor em branco
     }
@@ -56,6 +59,10 @@ public class Controle {
             // "sub-baralho" para alternar entre as duas cartas de telas
             telaJogador.showTela("tela_jogador_listagem"); // prevalece mostrar a listagem
             frame.showTela(nomeTela);
+        } else if (nomeTela.equals("tela_jogador_designer")) { // caso chamada a tela de Jogador designer
+            // "sub-baralho" para alternar entre as duas cartas de telas
+            telaJogador.showTela("listagem"); // prevalece mostrar a listagem
+            frame.showTela(nomeTela);
         }
         
         // método para mostrar outras telas -> Logout
@@ -80,11 +87,15 @@ public class Controle {
 
         // telaJogador
         telaJogador = new JPanelAJogador(this);
+        
+        // telaJogadorDesigner
+        telaJogadorDesigner = new JPanelDJogador(this);
 
         // baralho de cartas de telas
         frame.addTela(telaAutenticacao, "tela_autenticacao"); // adiciona e nomeia a tela ao baralho de cartas        
         frame.addTela(telaHome, "tela_home");
         frame.addTela(telaJogador, "tela_jogador");
+        frame.addTela(telaJogadorDesigner, "tela_jogador_designer");
 
         // carta de tela padrão
         frame.showTela("tela_autenticacao"); // busca e exibe a tela -> tela padrão

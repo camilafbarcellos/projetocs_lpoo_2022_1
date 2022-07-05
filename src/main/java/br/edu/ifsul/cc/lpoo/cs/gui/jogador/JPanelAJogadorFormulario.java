@@ -23,6 +23,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -77,6 +78,7 @@ public class JPanelAJogadorFormulario extends JPanel implements ActionListener{
     private JTable tblListagemPatente;
     private JComboBox cbxPatente;
     private JButton btnAdicionarPatente;
+    private JButton btnRemoverPatente;
     private DefaultTableModel modeloTabelaPatente;
     private JLabel lblPatenteAdicionar;
 
@@ -158,6 +160,22 @@ public class JPanelAJogadorFormulario extends JPanel implements ActionListener{
                 j.setData_ultimo_login(jogador.getData_ultimo_login());
             
             
+            DefaultTableModel model =  (DefaultTableModel) tblListagemPatente.getModel();//recuperacao do modelo da tabela
+            
+            for(Vector<Vector> linha : model.getDataVector()){
+                
+                Vector v = (Vector) linha; //model.addRow(new Object[]{u, u.getNome(), ...
+
+                Patente p = (Patente) v.get(1);
+                
+                System.out.println("Add patente no jogador ...");  
+                        
+                j.setPatente(p);
+                
+            }
+            
+        
+            
             return j;
          }
 
@@ -175,6 +193,11 @@ public class JPanelAJogadorFormulario extends JPanel implements ActionListener{
             txfDataUltimoLogin.setText("");
             txfNickname.setEditable(true);
             jogador = null;
+            
+            //limpa a tabela das patentes do jogador.
+            DefaultTableModel model =  (DefaultTableModel) tblListagemPatente.getModel();//recuperacao do modelo da tabela
+            model.setRowCount(0);
+            
 
         }else{
 
@@ -188,6 +211,20 @@ public class JPanelAJogadorFormulario extends JPanel implements ActionListener{
             if(j.getData_ultimo_login() != null)
                 txfDataUltimoLogin.setText(format.format(j.getData_ultimo_login().getTime()));
 
+            //gera linhas na tabela para listar as patentes de um determinado jogador.
+            if(jogador.getPatentes() != null){
+                
+                for(Patente p : jogador.getPatentes()){
+                    
+                    DefaultTableModel model =  (DefaultTableModel) tblListagemPatente.getModel();//recuperacao do modelo da tabela
+
+                    model.setRowCount(0);//elimina as linhas existentes (reset na tabela)
+                    
+                    model.addRow(new Object[]{p.getId(), p});
+        
+                }
+            }
+                        
         }
 
     }
@@ -206,80 +243,80 @@ public class JPanelAJogadorFormulario extends JPanel implements ActionListener{
         
         lblNickname = new JLabel("Nickname:");
         GridBagConstraints posicionador = new GridBagConstraints();
-        posicionador.gridy = 0;//policao da linha (vertical)
+        posicionador.gridy = 0;// posição da linha (vertical)
         posicionador.gridx = 0;// posição da coluna (horizontal)
         pnlDadosCadastrais.add(lblNickname, posicionador);//o add adiciona o rotulo no painel  
         
         txfNickname = new JTextField(20);        
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 0;//policao da linha (vertical)
+        posicionador.gridy = 0;// posição da linha (vertical)
         posicionador.gridx = 1;// posição da coluna (horizontal)
         posicionador.anchor = java.awt.GridBagConstraints.LINE_START;//ancoragem a esquerda.
         pnlDadosCadastrais.add(txfNickname, posicionador);//o add adiciona o rotulo no painel  
                 
         lblSenha = new JLabel("Senha:");
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 1;//policao da linha (vertical)
+        posicionador.gridy = 1;// posição da linha (vertical)
         posicionador.gridx = 0;// posição da coluna (horizontal)
         pnlDadosCadastrais.add(lblSenha, posicionador);//o add adiciona o rotulo no painel  
         
         txfSenha = new JPasswordField(10);
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 1;//policao da linha (vertical)
+        posicionador.gridy = 1;// posição da linha (vertical)
         posicionador.gridx = 1;// posição da coluna (horizontal)
         posicionador.anchor = java.awt.GridBagConstraints.LINE_START;//ancoragem a esquerda.
         pnlDadosCadastrais.add(txfSenha, posicionador);//o add adiciona o rotulo no painel  
                 
         lblPontos = new JLabel("Quantidade de Pontos:");
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 2;//policao da linha (vertical)
+        posicionador.gridy = 2;// posição da linha (vertical)
         posicionador.gridx = 0;// posição da coluna (horizontal)
         pnlDadosCadastrais.add(lblPontos, posicionador);//o add adiciona o rotulo no painel  
                 
         txfPontos = new JTextField(5);
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 2;//policao da linha (vertical)
+        posicionador.gridy = 2;// posição da linha (vertical)
         posicionador.gridx = 1;// posição da coluna (horizontal)
         posicionador.anchor = java.awt.GridBagConstraints.LINE_START;//ancoragem a esquerda.
         pnlDadosCadastrais.add(txfPontos, posicionador);//o add adiciona o rotulo no painel  
             
         lblEndereco = new JLabel("Endereço:");
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 3;//policao da linha (vertical)
+        posicionador.gridy = 3;// posição da linha (vertical)
         posicionador.gridx = 0;// posição da coluna (horizontal)
         posicionador.anchor = java.awt.GridBagConstraints.LINE_START;//ancoragem a esquerda.
         pnlDadosCadastrais.add(lblEndereco, posicionador);//o add adiciona o rotulo no painel  
                 
         cbxEndereco = new JComboBox();
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 3;//policao da linha (vertical)
+        posicionador.gridy = 3;// posição da linha (vertical)
         posicionador.gridx = 1;// posição da coluna (horizontal)
         posicionador.anchor = java.awt.GridBagConstraints.LINE_START;//ancoragem a esquerda.
         pnlDadosCadastrais.add(cbxEndereco, posicionador);//o add adiciona o rotulo no painel 
                 
         lblDataUltimoLogin = new JLabel("Data último login:");
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 4;//policao da linha (vertical)
+        posicionador.gridy = 4;// posição da linha (vertical)
         posicionador.gridx = 0;// posição da coluna (horizontal)
         pnlDadosCadastrais.add(lblDataUltimoLogin, posicionador);//o add adiciona o rotulo no painel 
                 
         txfDataUltimoLogin = new JTextField(20);
         txfDataUltimoLogin.setEditable(false);
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 4;//policao da linha (vertical)
+        posicionador.gridy = 4;// posição da linha (vertical)
         posicionador.gridx = 1;// posição da coluna (horizontal)        
         pnlDadosCadastrais.add(txfDataUltimoLogin, posicionador);//o add adiciona o rotulo no painel 
                         
         lblDataCadastro = new JLabel("Data de Cadastro:");
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 5;//policao da linha (vertical)
+        posicionador.gridy = 5;// posição da linha (vertical)
         posicionador.gridx = 0;// posição da coluna (horizontal)
         pnlDadosCadastrais.add(lblDataCadastro, posicionador);//o add adiciona o rotulo no painel         
         
         txfDataCadastro = new JTextField(20);
         txfDataCadastro.setEditable(false);
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 5;//policao da linha (vertical)
+        posicionador.gridy = 5;// posição da linha (vertical)
         posicionador.gridx = 1;// posição da coluna (horizontal)
         pnlDadosCadastrais.add(txfDataCadastro, posicionador);//o add adiciona o rotulo no painel         
         
@@ -306,8 +343,10 @@ public class JPanelAJogadorFormulario extends JPanel implements ActionListener{
         lblPatenteAdicionar = new JLabel("Escolha a Patente para adicionar:");
         btnAdicionarPatente = new JButton("Adicionar");
         
+        btnRemoverPatente = new JButton("Remover");
+        
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 0;//policao da linha (vertical)
+        posicionador.gridy = 0;// posição da linha (vertical)
         posicionador.gridx = 0;// posição da coluna (horizontal)
         pnlDadosPatentes.add(scpListagemPatente, posicionador);//o add adiciona o rotulo no painel
         
@@ -318,17 +357,31 @@ public class JPanelAJogadorFormulario extends JPanel implements ActionListener{
         
         
         posicionador = new GridBagConstraints();
-        posicionador.gridy = 1;//policao da linha (vertical)
+        posicionador.gridy = 1;// posição da linha (vertical)
         posicionador.gridx = 0;// posição da coluna (horizontal)
         pnlDadosPatentes.add(pnlLinha, posicionador);//o add adiciona o rotulo no painel
         
         
-        posicionador = new GridBagConstraints();
-        posicionador.gridy = 2;//policao da linha (vertical)
-        posicionador.gridx = 0;// posição da coluna (horizontal)
-        pnlDadosPatentes.add(btnAdicionarPatente, posicionador);//o add adiciona o rotulo no painel
+        btnAdicionarPatente.addActionListener(this);
+        btnAdicionarPatente.setActionCommand("botao_adicionar_patente_formulario_jogador");
+  
+    
+        btnRemoverPatente.addActionListener(this);
+        btnRemoverPatente.setActionCommand("botao_remover_patente_formulario_jogador");
+  
         
-                
+        JPanel pnlLinhaB = new JPanel();
+        pnlLinhaB.setLayout(new FlowLayout());
+        pnlLinhaB.add(btnAdicionarPatente);
+        pnlLinhaB.add(btnRemoverPatente);
+        
+        posicionador = new GridBagConstraints();
+        posicionador.gridy = 2;// posição da linha (vertical)
+        posicionador.gridx = 0;// posição da coluna (horizontal)
+        pnlDadosPatentes.add(pnlLinhaB, posicionador);//o add adiciona o rotulo no painel
+   
+        
+        
         tbpAbas.addTab("Patentes", pnlDadosPatentes);
         
         
@@ -380,12 +433,12 @@ public class JPanelAJogadorFormulario extends JPanel implements ActionListener{
                     
                     pnlAJogador.getControle().getConexaoJDBC().persist(j);
                     
-                    JOptionPane.showMessageDialog(this, "Jogador atualizado com sucesso!", "Salvar", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Jogador armazenado!", "Salvar", JOptionPane.INFORMATION_MESSAGE);
                     
                     pnlAJogador.showTela("tela_jogador_listagem");
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Erro ao atualizar Jogador! : "+ex.getMessage(), "Salvar", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Erro ao salvar Jogador! : "+ex.getMessage(), "Salvar", JOptionPane.ERROR_MESSAGE);
                     ex.printStackTrace();
                 }
 
@@ -400,6 +453,33 @@ public class JPanelAJogadorFormulario extends JPanel implements ActionListener{
             
                 pnlAJogador.showTela("tela_jogador_listagem");
             
+        }else if(arg0.getActionCommand().equals(btnAdicionarPatente.getActionCommand())){
+            
+            //adiciona uma patente na lista de patentes do jogador (jtable)
+            if(cbxPatente.getSelectedIndex() > 0){
+                
+                DefaultTableModel model =  (DefaultTableModel) tblListagemPatente.getModel();//recuperacao do modelo da tabela
+
+                Patente  p =  (Patente) cbxPatente.getSelectedItem();
+            
+                model.addRow(new Object[] {p.getId(), p});
+                
+            }else{
+                
+                JOptionPane.showMessageDialog(this, "Selecione uma Patente para adicionar !!", "Patentes do Jogador", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+              
+        }else if(arg0.getActionCommand().equals(btnRemoverPatente.getActionCommand())){
+            
+            int indice = tblListagemPatente.getSelectedRow();//recupera a linha selecionada
+            if(indice > -1){
+
+                DefaultTableModel model =  (DefaultTableModel) tblListagemPatente.getModel(); //recuperacao do modelo da table
+                
+                model.removeRow(indice); // remove a linha selecionada.
+                   
+            }
         }
     }
 }
